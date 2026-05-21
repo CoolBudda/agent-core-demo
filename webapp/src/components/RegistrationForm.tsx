@@ -69,7 +69,7 @@ export function RegistrationForm() {
 
   return (
     <div className="form-container">
-      <h1>Agent Core Registration</h1>
+      <h1>AgentCore Registration</h1>
       <p className="subtitle">Fill in your details to get started with AgentCore processing.</p>
 
       <form onSubmit={handleSubmit} noValidate>
