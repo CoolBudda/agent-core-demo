@@ -1,0 +1,23 @@
+@startuml context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title C4 Context Diagram — AWS Form Processing Application
+
+LAYOUT_WITH_LEGEND()
+
+Person(endUser, "End User", "Submits forms via the web interface.")
+Person(employee, "Employee / Operator", "Receives successfully validated form submissions for processing.")
+
+System_Boundary(awsBoundary, "AWS Cloud") {
+    System(formApp, "AWS Form Processing Application", "Accepts form submissions, validates them via AI agents, routes successful submissions to employees, and creates tickets for failed submissions.")
+}
+
+System_Ext(ticketSystem, "Ticket Tracking System", "Receives ticket creation requests when form validation fails.")
+System_Ext(bedrockAgentCore, "AWS Bedrock AgentCore", "Hosts and executes the validator, error-handler, and handoff AI agents.")
+
+Rel(endUser, formApp, "Submits form", "HTTPS")
+Rel(formApp, employee, "Routes validated submission [on success]", "Internal notification / handoff")
+Rel(formApp, ticketSystem, "Creates ticket [on validation failure]", "REST / HTTPS")
+Rel(formApp, bedrockAgentCore, "Invokes AI agents for validation, error handling, and handoff", "AWS SDK / HTTPS")
+
+@enduml

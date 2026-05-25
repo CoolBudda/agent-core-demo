@@ -1,0 +1,52 @@
+@startuml component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title C4 Component Diagram — Lambda Backend (Internal Components)
+
+LAYOUT_WITH_LEGEND()
+
+Person(employee, "Employee / Operator", "Receives successfully validated form submissions.")
+System_Ext(ticketSystem, "Ticket Tracking System", "Creates tickets on validation failure.")
+System_Ext(bedrockAgentCore, "AWS Bedrock AgentCore", "Hosts the validator, error-handler, and handoff agents.")
+System_Ext(apiGateway, "AWS API Gateway", "Routes HTTP requests to Lambda; receives responses.")
+
+Container_Boundary(lambdaBoundary, "Lambda Backend (Python 3.10+, uv)") {
+    Component(lambdaHandler, "Lambda Handler", "Python module: handler.py", "Entry point. Parses the API Gateway event, coordinates the agent pipeline, and returns the response.")
+    Component(validatorClient, "Validator Agent Client", "Python module: agents/validator.py, boto3", "Invokes the Bedrock AgentCore validator agent. Returns a valid | invalid verdict plus structured error details.")
+    Component(errorHandlerClient, "Error Handler Agent Client", "Python module: agents/error_handler.py, boto3", "Invoked on validation failure. Calls the Bedrock AgentCore error-handler agent, which triggers ticket creation in the Ticket Tracking System.")
+    Component(handoffClient, "Handoff Agent Client", "Python module: agents/handoff.py, boto3", "Invoked on validation success. Calls the Bedrock AgentCore handoff agent to route the submission to the appropriate employee.")
+    Component(logger, "Logger", "Python standard logging / aws-lambda-powertools", "Cross-cutting structured logger used by all components for observability.")
+}
+
+' Inbound call
+Rel(apiGateway, lambdaHandler, "Invokes with event payload", "AWS SDK")
+
+' Orchestration — always validate first
+Rel(lambdaHandler, validatorClient, "Calls to validate submission", "In-process")
+Rel(validatorClient, bedrockAgentCore, "Invoke validator agent", "AWS SDK / HTTPS")
+
+' Failure branch
+Rel(lambdaHandler, errorHandlerClient, "Calls [on invalid result]", "In-process")
+Rel(errorHandlerClient, bedrockAgentCore, "Invoke error-handler agent", "AWS SDK / HTTPS")
+Rel(errorHandlerClient, ticketSystem, "Create ticket for failed submission", "REST / HTTPS")
+
+' Success branch
+Rel(lambdaHandler, handoffClient, "Calls [on valid result]", "In-process")
+Rel(handoffClient, bedrockAgentCore, "Invoke handoff agent", "AWS SDK / HTTPS")
+Rel(handoffClient, employee, "Route validated submission", "Via Handoff Agent / internal notification")
+
+' Cross-cutting logging
+Rel(lambdaHandler, logger, "Logs request and pipeline events", "In-process")
+Rel(validatorClient, logger, "Logs agent invocation and result", "In-process")
+Rel(errorHandlerClient, logger, "Logs error handling and ticket creation", "In-process")
+Rel(handoffClient, logger, "Logs handoff events", "In-process")
+
+note right of lambdaHandler
+  Orchestration sequence:
+  1. Parse API Gateway event
+  2. Call Validator Agent Client
+  3a. [invalid] → Error Handler Agent Client → Ticket Tracking System
+  3b. [valid]   → Handoff Agent Client → Employee / Operator
+end note
+
+@enduml

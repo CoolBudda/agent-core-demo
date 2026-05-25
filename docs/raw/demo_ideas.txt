@@ -1,0 +1,7 @@
+create a demo for using AWS bedrock agentcore
+
+create an application where a user submits a form and multiple agents process this. The intent include "data validation using a backend system, error handling which could include creating a ticket in a tracking system, send it to an actual employee to take action (if there are no validation errors)."
+To submit a form, you can build a simple UI or even a POST API. This is NOT the focus of this learning excercise. 
+
+
+There form includes a intruduciton of aperson to includes user name, email, phone number, and favoriate sport

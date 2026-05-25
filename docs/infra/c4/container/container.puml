@@ -1,0 +1,38 @@
+@startuml container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title C4 Container Diagram — AWS Form Processing Application
+
+LAYOUT_WITH_LEGEND()
+
+Person(endUser, "End User", "Submits forms via the web interface.")
+Person(employee, "Employee / Operator", "Receives successfully validated form submissions.")
+
+System_Ext(ticketSystem, "Ticket Tracking System", "Creates tickets on validation failure.")
+System_Ext(bedrockAgentCore, "AWS Bedrock AgentCore", "Hosts and executes the validator, error-handler, and handoff AI agents.")
+
+System_Boundary(awsBoundary, "AWS Cloud") {
+    Container(reactApp, "React Web App", "Vite, React, Tailwind CSS", "Renders the form UI and submits user input to the backend API.")
+    Container(apiGateway, "AWS API Gateway", "AWS Managed", "Receives HTTP requests from the browser, authenticates, and routes them to the Lambda Backend.")
+    Container(lambdaBackend, "Lambda Backend", "Python 3.10+, uv", "Orchestrates the multi-agent validation pipeline: invokes the Validator, Error Handler, and Handoff agents in sequence according to validation outcome.")
+}
+
+' Request path
+Rel(endUser, reactApp, "Fills and submits form", "HTTPS")
+Rel(reactApp, apiGateway, "POST /submit (form payload)", "HTTPS / REST")
+Rel(apiGateway, lambdaBackend, "Invokes with event payload", "AWS SDK")
+
+' Agent orchestration
+Rel(lambdaBackend, bedrockAgentCore, "Invokes validator, error-handler, and handoff agents", "AWS SDK / HTTPS")
+
+' Failure path
+Rel(lambdaBackend, ticketSystem, "Creates ticket [on validation failure]", "REST / HTTPS")
+
+' Success path
+Rel(lambdaBackend, employee, "Routes validated submission [on validation success]", "Via Handoff Agent / internal notification")
+
+' Response path
+Rel(lambdaBackend, apiGateway, "Returns validation result and status", "JSON")
+Rel(apiGateway, reactApp, "Forwards response to browser", "HTTPS / JSON")
+
+@enduml

@@ -1,0 +1,68 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Registration Email Worker",
+    "description": "Action group schema for the AgentCore email worker. Bedrock Agent calls this when all four registration fields are collected.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/send_registration_email": {
+      "post": {
+        "operationId": "sendRegistrationEmail",
+        "description": "Sends a registration confirmation email to the user. Call this only when name, email, phone, and favorite_sport are all present.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "phone", "favorite_sport"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Full name of the registrant."
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email address to send the confirmation to."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Phone number of the registrant."
+                  },
+                  "favorite_sport": {
+                    "type": "string",
+                    "description": "Registrant's favourite sport."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email sent successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "email_sent"
+                    },
+                    "recipient": {
+                      "type": "string",
+                      "example": "alice@example.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
