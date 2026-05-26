@@ -35,15 +35,10 @@ Run commands from each project folder:
 
 When asked to scaffold a new multi-agent Lambda app, prefer this repository-style pattern at the target folder root:
 
-- bedrock-agent/lambda_function.py
-- bedrock-agent/utils.py
-- bedrock-agent/requirements.txt
-- agencycore-worker1/lambda_function.py
-- agencycore-worker1/utils.py
-- agencycore-worker1/requirements.txt
-- agencycore-worker2/lambda_function.py
-- agencycore-worker2/utils.py
-- agencycore-worker2/requirements.txt
+- multi-agent-registration-app/bedrock-agent/lambda_function.py
+- multi-agent-registration-app/bedrock-agent/requirements.txt
+- multi-agent-registration-app/agentcore-worker-email/lambda_function.py
+- multi-agent-registration-app/agentcore-worker-email/requirements.txt
 - README.md
 
 Use this naming unless the user asks for different agent names or a different compute platform.

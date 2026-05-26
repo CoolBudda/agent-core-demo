@@ -4,9 +4,15 @@ import type { FreetextFormData, ValidationResult } from '../../../types';
 export async function validateFreetextForm(
   data: FreetextFormData
 ): Promise<ValidationResult> {
-  const response = await apiClient.post<ValidationResult>(
+  // sessionId must be present in data
+  const response = await apiClient.post(
     '/validate/freetext',
     data
   );
+  // If backend returns { result: ... }
+  if (response.data && response.data.result) {
+    return response.data.result;
+  }
+  // fallback: assume response.data is ValidationResult
   return response.data;
 }

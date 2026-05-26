@@ -7,10 +7,19 @@ aws-azure-login
 
 Agent instruction, apisepc s3:
 s3://sc-registration-demo-bucket/ai-agent/
-
+s3://sc-registration-demo-bucket/ai-agent/openapi.json
+s3://sc-registration-demo-bucket/ai-agent/agent_instruction.txt
 
 confirmed lambda:
 arn:aws:lambda:us-east-1:863615190391:function:sc-registration-action-group-2n1wg
 arn:aws:lambda:us-east-1:863615190391:function:user-registration-validation-br-ag-1d368
 
 accetp input lambda:
+
+
+
+Procedure:
+aws-azure-login
+aws sts get-caller-identity
+
+

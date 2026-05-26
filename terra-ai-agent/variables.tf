@@ -67,10 +67,6 @@ Be concise and friendly. Keep follow-up questions short — list only the missin
 EOT
 }
 
-variable "bedrock_agent_resource_role_arn" {
-  description = "IAM role ARN for the Bedrock agent resource."
-  type        = string
-}
 
 variable "environment" {
   description = "Deployment environment (e.g. dev, staging, prod)."

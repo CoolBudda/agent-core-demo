@@ -7,6 +7,7 @@ export interface StructuredFormData {
 
 export interface FreetextFormData {
   rawInput: string;
+  sessionId: string;
 }
 
 export interface ValidationResult {

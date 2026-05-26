@@ -1,5 +1,9 @@
+
+
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { v4 as uuidv4 } from 'uuid';
 import { useMutation } from '@tanstack/react-query';
 import { freetextFormSchema, type FreetextFormSchema } from '../../../utils/schemas';
 import { validateFreetextForm } from '../api';
@@ -15,8 +19,33 @@ export default function FreetextFormScreen() {
     resolver: zodResolver(freetextFormSchema),
   });
 
+
+  // Session ID management
+  const sessionIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    let sessionId = localStorage.getItem('sessionId');
+    if (!sessionId) {
+      sessionId = uuidv4();
+      localStorage.setItem('sessionId', sessionId ?? '');
+    }
+    sessionIdRef.current = sessionId;
+  }, []);
+
+
   const mutation = useMutation<ValidationResult, Error, FreetextFormSchema>({
-    mutationFn: validateFreetextForm,
+    mutationFn: (data) => {
+      // Attach sessionId to payload
+      return validateFreetextForm({ ...data, sessionId: sessionIdRef.current! });
+    },
+    onSuccess: (result) => {
+      if (result.status === 'valid') {
+        // Reset sessionId for next request
+        const newSessionId = uuidv4();
+        sessionIdRef.current = newSessionId;
+        localStorage.setItem('sessionId', newSessionId);
+      }
+      // If invalid, keep current sessionId
+    },
   });
 
   const onSubmit = (data: FreetextFormSchema) => {
