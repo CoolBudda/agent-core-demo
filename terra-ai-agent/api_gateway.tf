@@ -10,7 +10,7 @@ resource "aws_cloudwatch_log_group" "api_gateway_logs" {
 # REST API
 # ------------------------------------------------------------------
 resource "aws_api_gateway_rest_api" "this" {
-  name        = "agent-core-api-${var.environment}"
+  name        = "registration-agent-api-${var.environment}"
   description = "Receives form submissions and routes them to the Lambda agent orchestrator."
 
   endpoint_configuration {
@@ -124,16 +124,22 @@ resource "aws_api_gateway_stage" "this" {
   deployment_id = aws_api_gateway_deployment.this.id
   stage_name    = var.environment
 
-  # Throttling — protects Lambda from runaway traffic
-  default_route_settings {
-    # REST API stages use method-level throttling below (not default_route_settings),
-    # but this block is retained for compatibility with HTTP API if migrated.
-    # Throttling is applied via aws_api_gateway_method_settings below.
-  }
 
   # Execution logging to CloudWatch
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gateway_logs.arn
+    format = jsonencode({
+      requestId       = "$context.requestId"
+      ip              = "$context.identity.sourceIp"
+      caller          = "$context.identity.caller"
+      user            = "$context.identity.user"
+      requestTime     = "$context.requestTime"
+      httpMethod      = "$context.httpMethod"
+      resourcePath    = "$context.resourcePath"
+      status          = "$context.status"
+      protocol        = "$context.protocol"
+      responseLength  = "$context.responseLength"
+    })
   }
 
   depends_on = [aws_api_gateway_account.this]

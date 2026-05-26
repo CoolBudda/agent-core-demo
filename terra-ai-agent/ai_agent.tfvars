@@ -1,0 +1,9 @@
+bedrock_agent_name = "user-registration-validation-agent"
+bedrock_agent_description = "Demo Bedrock agent for registration."
+bedrock_agent_foundation_model = "anthropic.claude-3-sonnet-20240229-v1:0"
+bedrock_agent_instruction_s3_uri = "s3://sc-registration-demo-bucket/ai-agent/agent_instruction.txt"
+bedrock_agent_resource_role_arn = "arn:aws:iam::123456789012:role/your-bedrock-agent-role"
+environment = "dev"
+bedrock_agent_zip_path = "../multi-agent-registration-app/bedrock-agent/dist/bedrock_agent.zip"
+api_gateway_throttle_burst = 50
+api_gateway_throttle_rate = 100

@@ -31,9 +31,8 @@ resource "aws_lambda_function" "bedrock_agent" {
 
   environment {
     variables = {
-      ENVIRONMENT              = var.environment
-      BEDROCK_AGENT_ID         = var.bedrock_validator_agent_id
-      BEDROCK_AGENT_ALIAS_ID   = var.bedrock_validator_agent_alias_id
+      ENVIRONMENT      = var.environment
+      BEDROCK_AGENT_ID = awscc_bedrock_agent.this.id
     }
   }
 

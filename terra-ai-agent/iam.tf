@@ -1,3 +1,54 @@
+# ------------------------------------------------------------------
+# Bedrock Agent resource role — least-privilege
+# Allows Bedrock Agent to access required AWS services (customize as needed)
+# ------------------------------------------------------------------
+resource "aws_iam_role" "bedrock_agent_resource_role" {
+  name = "bedrock-agent-resource-role-${var.environment}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = { Service = "bedrock.amazonaws.com" }
+        Action    = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+# Example policy attachment: allow S3 read (for instruction file), CloudWatch logs, etc.
+resource "aws_iam_policy" "bedrock_agent_basic" {
+  name        = "bedrock-agent-basic-${var.environment}"
+  description = "Basic permissions for Bedrock agent (S3 read, logs)."
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject"
+        ],
+        Resource = "arn:aws:s3:::*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "bedrock_agent_basic" {
+  role       = aws_iam_role.bedrock_agent_resource_role.name
+  policy_arn = aws_iam_policy.bedrock_agent_basic.arn
+}
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
@@ -50,8 +101,8 @@ resource "aws_iam_policy" "lambda_logs" {
 
 # Bedrock InvokeAgent — scoped to the three specific agent ARNs
 resource "aws_iam_policy" "lambda_bedrock" {
-  name        = "agent-core-lambda-bedrock-${var.environment}"
-  description = "Allow Lambda to invoke only the three Bedrock AgentCore agents for this project."
+  name        = "agent-lambda-bedrock-${var.environment}"
+  description = "Allow Lambda to invoke only the three Bedrock agents for this project."
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -61,9 +112,7 @@ resource "aws_iam_policy" "lambda_bedrock" {
         Effect = "Allow"
         Action = "bedrock:InvokeAgent"
         Resource = [
-          "arn:aws:bedrock:us-east-1:${data.aws_caller_identity.current.account_id}:agent-alias/${var.bedrock_validator_agent_id}/${var.bedrock_validator_agent_alias_id}",
-          "arn:aws:bedrock:us-east-1:${data.aws_caller_identity.current.account_id}:agent-alias/${var.bedrock_error_handler_agent_id}/${var.bedrock_error_handler_agent_alias_id}",
-          "arn:aws:bedrock:us-east-1:${data.aws_caller_identity.current.account_id}:agent-alias/${var.bedrock_handoff_agent_id}/${var.bedrock_handoff_agent_alias_id}"
+          "arn:aws:bedrock:us-east-1:${data.aws_caller_identity.current.account_id}:agent/${awscc_bedrock_agent.this.id}"
         ]
       }
     ]
