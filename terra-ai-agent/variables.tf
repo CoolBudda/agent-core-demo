@@ -1,3 +1,14 @@
+variable "bedrock_agent_alias_name" {
+  description = "Name of the Bedrock agent alias."
+  type        = string
+  default     = "demo"
+}
+
+variable "bedrock_agent_alias_description" {
+  description = "Description for the Bedrock agent alias."
+  type        = string
+  default     = "Production alias for Bedrock agent."
+}
 variable "bedrock_agent_instruction_s3_uri" {
   description = "S3 URI for the Bedrock agent instruction file."
   type        = string
