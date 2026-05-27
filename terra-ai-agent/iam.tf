@@ -49,6 +49,7 @@ resource "aws_iam_role_policy_attachment" "bedrock_agent_basic" {
   role       = aws_iam_role.bedrock_agent_resource_role.name
   policy_arn = aws_iam_policy.bedrock_agent_basic.arn
 }
+
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
@@ -58,7 +59,7 @@ data "aws_region" "current" {}
 # specific agent ARN in this account/region only).
 # ------------------------------------------------------------------
 resource "aws_iam_role" "lambda_exec" {
-  name = "agent-core-lambda-exec-${var.environment}"
+  name = "agent-lambda-exec-${var.environment}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -74,7 +75,7 @@ resource "aws_iam_role" "lambda_exec" {
 
 # CloudWatch Logs — scoped to this function's log group only
 resource "aws_iam_policy" "lambda_logs" {
-  name        = "agent-core-lambda-logs-${var.environment}"
+  name        = "agent-lambda-logs-${var.environment}"
   description = "Allow Lambda to write execution logs to its own log group."
 
   policy = jsonencode({
@@ -136,7 +137,7 @@ resource "aws_iam_role_policy_attachment" "lambda_bedrock" {
 # Uses the AWS-managed policy as required by AWS.
 # ------------------------------------------------------------------
 resource "aws_iam_role" "api_gateway_cloudwatch" {
-  name = "agent-core-apigw-cloudwatch-${var.environment}"
+  name = "agent-apigw-cloudwatch-${var.environment}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

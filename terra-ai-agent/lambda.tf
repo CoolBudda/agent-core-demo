@@ -32,7 +32,9 @@ resource "aws_lambda_function" "bedrock_agent" {
   environment {
     variables = {
       ENVIRONMENT      = var.environment
-      BEDROCK_AGENT_ID = awscc_bedrock_agent.this.id
+      BEDROCK_AGENT_ID   = awscc_bedrock_agent.this.id
+      BEDROCK_AGENT_ALIAS_ID = awscc_bedrock_agent_alias.this.id
+      BEDROCK_AGENT_REGION = var.region
     }
   }
 
@@ -53,7 +55,7 @@ resource "aws_lambda_function" "email_worker" {
   role          = aws_iam_role.lambda_exec.arn
 
   filename         = var.agent_worker_email_zip_path
-  source_code_hash = filebase64sha256(var.email_worker_zip_path)
+  source_code_hash = filebase64sha256(var.agent_worker_email_zip_path)
 
   runtime     = "python3.10"
   handler     = "lambda_function.handler"
@@ -64,8 +66,6 @@ resource "aws_lambda_function" "email_worker" {
     variables = {
       ENVIRONMENT        = var.environment
       SES_SENDER_EMAIL   = var.ses_sender_email
-      BEDROCK_AGENT_ID   = awscc_bedrock_agent.this.id
-      BEDROCK_AGENT_ALIAS_ID = awscc_bedrock_agent_alias.this.id
       BEDROCK_AGENT_REGION = var.region
     }
   }
