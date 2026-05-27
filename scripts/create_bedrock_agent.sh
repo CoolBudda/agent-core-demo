@@ -3,7 +3,7 @@
 # create_bedrock_agent.sh
 #
 # Creates an AWS Bedrock Agent for the user registration app and wires up the
-# agentcore-worker-email action group.
+# agent-worker-email action group.
 #
 # Designed to run in AWS CloudShell — no local repo clone required.
 # AWS credentials are provided automatically by CloudShell.
@@ -13,7 +13,7 @@
 #   2. Upload this file: Actions > Upload file.
 #   3. Set required variables:
 #        export AGENT_ROLE_ARN="arn:aws:iam::123456789012:role/BedrockAgentRole"
-#        export EMAIL_WORKER_LAMBDA_ARN="arn:aws:lambda:us-east-1:123456789012:function:agentcore-worker-email-dev"
+#        export EMAIL_WORKER_LAMBDA_ARN="arn:aws:lambda:us-east-1:123456789012:function:agent-worker-email-dev"
 #        export SCHEMA_S3_BUCKET="my-agent-assets-bucket"
 #   4. Run:
 #        chmod +x create_bedrock_agent.sh && ./create_bedrock_agent.sh
@@ -28,7 +28,7 @@
 #   AGENT_NAME              Bedrock Agent name
 #   FOUNDATION_MODEL        Model ID to use
 #   AGENT_ROLE_ARN          IAM role ARN Bedrock assumes to run the agent  [REQUIRED]
-#   EMAIL_WORKER_LAMBDA_ARN Lambda ARN for agentcore-worker-email           [REQUIRED]
+#   EMAIL_WORKER_LAMBDA_ARN Lambda ARN for agent-worker-email           [REQUIRED]
 #   SCHEMA_S3_BUCKET        S3 bucket where openapi.json will be uploaded  [REQUIRED]
 #   SCHEMA_S3_KEY           S3 key for the uploaded schema
 #   ALIAS_NAME              Alias name to publish after preparation
@@ -38,7 +38,7 @@ set -euo pipefail
 
 SCHEMA_S3_BUCKET="sc-registration-demo-bucket"
 AGENT_ROLE_ARN="arn:aws:iam::123456789012:role/BedrockAgentRole"
-EMAIL_WORKER_LAMBDA_ARN="arn:aws:lambda:us-east-1:123456789012:function:agentcore-worker-email-dev"
+EMAIL_WORKER_LAMBDA_ARN="arn:aws:lambda:us-east-1:123456789012:function:agent-worker-email-dev"
 
 # ---------------------------------------------------------------------------
 # Configuration — override via environment variables or edit defaults below
@@ -49,7 +49,7 @@ FOUNDATION_MODEL="${FOUNDATION_MODEL:-anthropic.claude-3-5-sonnet-20241022-v2:0}
 AGENT_ROLE_ARN="${AGENT_ROLE_ARN:-}"
 EMAIL_WORKER_LAMBDA_ARN="${EMAIL_WORKER_LAMBDA_ARN:-}"
 SCHEMA_S3_BUCKET="${SCHEMA_S3_BUCKET:-}"
-SCHEMA_S3_KEY="${SCHEMA_S3_KEY:-schemas/agentcore-worker-email/openapi.json}"
+SCHEMA_S3_KEY="${SCHEMA_S3_KEY:-schemas/agent-worker-email/openapi.json}"
 ALIAS_NAME="${ALIAS_NAME:-prod}"
 
 # ---------------------------------------------------------------------------

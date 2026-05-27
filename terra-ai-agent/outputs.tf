@@ -14,12 +14,12 @@ output "bedrock_agent_function_arn" {
 }
 
 output "email_worker_function_name" {
-  description = "Name of the agentcore-worker-email Lambda (Bedrock Agent action group target)."
+  description = "Name of the agent-worker-email Lambda (Bedrock Agent action group target)."
   value       = aws_lambda_function.email_worker.function_name
 }
 
 output "email_worker_function_arn" {
-  description = "ARN of the agentcore-worker-email Lambda. Use this when configuring the Bedrock Agent action group."
+  description = "ARN of the agent-worker-email Lambda. Use this when configuring the Bedrock Agent action group."
   value       = aws_lambda_function.email_worker.arn
 }
 
@@ -34,7 +34,7 @@ output "cloudwatch_log_group_bedrock_agent" {
 }
 
 output "cloudwatch_log_group_email_worker" {
-  description = "CloudWatch log group for the agentcore-worker-email Lambda."
+  description = "CloudWatch log group for the agent-worker-email Lambda."
   value       = aws_cloudwatch_log_group.email_worker_logs.name
 }
 

@@ -8,7 +8,7 @@ resource "aws_cloudwatch_log_group" "bedrock_agent_logs" {
 }
 
 resource "aws_cloudwatch_log_group" "email_worker_logs" {
-  name              = "/aws/lambda/agentcore-worker-email-${var.environment}"
+  name              = "/aws/lambda/agent-worker-email-${var.environment}"
   retention_in_days = 30
 }
 
@@ -44,15 +44,15 @@ resource "aws_lambda_function" "bedrock_agent" {
 }
 
 # ------------------------------------------------------------------
-# Lambda — AgentCore email worker
+# Lambda — Agent email worker
 # Called by Bedrock Agent as an action group when all fields are present.
 # ------------------------------------------------------------------
 resource "aws_lambda_function" "email_worker" {
-  function_name = "agentcore-worker-email-${var.environment}"
+  function_name = "agent-worker-email-${var.environment}"
   description   = "Sends registration confirmation email. Invoked by Bedrock Agent action group when all registration fields are collected."
   role          = aws_iam_role.lambda_exec.arn
 
-  filename         = var.email_worker_zip_path
+  filename         = var.agent_worker_email_zip_path
   source_code_hash = filebase64sha256(var.email_worker_zip_path)
 
   runtime     = "python3.10"
@@ -64,6 +64,9 @@ resource "aws_lambda_function" "email_worker" {
     variables = {
       ENVIRONMENT        = var.environment
       SES_SENDER_EMAIL   = var.ses_sender_email
+      BEDROCK_AGENT_ID   = awscc_bedrock_agent.this.id
+      BEDROCK_AGENT_ALIAS_ID = awscc_bedrock_agent_alias.this.id
+      BEDROCK_AGENT_REGION = var.region
     }
   }
 

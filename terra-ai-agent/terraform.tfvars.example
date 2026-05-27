@@ -4,7 +4,7 @@
 
 environment           = "dev"
 bedrock_agent_zip_path = "../multi-agent-registration-app/bedrock-agent/dist/bedrock_agent.zip"
-email_worker_zip_path  = "../multi-agent-registration-app/agentcore-worker-email/dist/agentcore_worker_email.zip"
+email_worker_zip_path  = "../multi-agent-registration-app/agent-worker-email/dist/agent_worker_email.zip"
 
 # Bedrock AgentCore agent IDs and alias IDs.
 # Find these in the AWS Console under Amazon Bedrock > Agents.
@@ -19,6 +19,6 @@ bedrock_handoff_agent_alias_id       = "CHANGE_ME"
 api_gateway_throttle_burst = 50
 api_gateway_throttle_rate  = 100
 
-# Required for agentcore-worker-email Lambda
+# Required for agent-worker-email Lambda
 # Must be a verified SES sender email in your AWS account
 ses_sender_email = "CHANGE_ME"

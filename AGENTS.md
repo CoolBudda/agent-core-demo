@@ -37,8 +37,8 @@ When asked to scaffold a new multi-agent Lambda app, prefer this repository-styl
 
 - multi-agent-registration-app/bedrock-agent/lambda_function.py
 - multi-agent-registration-app/bedrock-agent/requirements.txt
-- multi-agent-registration-app/agentcore-worker-email/lambda_function.py
-- multi-agent-registration-app/agentcore-worker-email/requirements.txt
+- multi-agent-registration-app/agent-worker-email/lambda_function.py
+- multi-agent-registration-app/agent-worker-email/requirements.txt
 - README.md
 
 Use this naming unless the user asks for different agent names or a different compute platform.

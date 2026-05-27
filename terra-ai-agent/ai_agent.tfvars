@@ -5,5 +5,6 @@ bedrock_agent_instruction_s3_uri = "s3://sc-registration-demo-bucket/ai-agent/ag
 bedrock_agent_resource_role_arn = "arn:aws:iam::123456789012:role/your-bedrock-agent-role"
 environment = "dev"
 bedrock_agent_zip_path = "../multi-agent-registration-app/bedrock-agent/dist/bedrock_agent.zip"
+agent_worker_email_zip_path = "../multi-agent-registration-app/agent-worker-email/dist/agent_worker_email.zip"
 api_gateway_throttle_burst = 50
 api_gateway_throttle_rate = 100

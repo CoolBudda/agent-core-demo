@@ -16,7 +16,7 @@ bedrock-agent/            ← calls Bedrock Agent runtime (invoke_agent)
     └── all fields present
             │
             ▼
-    agentcore-worker-email/   ← Bedrock Agent action group; sends confirmation email via SES
+    agent-worker-email/   ← Bedrock Agent action group; sends confirmation email via SES
 ```
 
 ## Required Fields
@@ -37,7 +37,7 @@ bedrock-agent/            ← calls Bedrock Agent runtime (invoke_agent)
 | BEDROCK_AGENT_ID       | Bedrock Agent resource ID            |
 | BEDROCK_AGENT_ALIAS_ID | Bedrock Agent alias ID (e.g. prod)   |
 
-### agentcore-worker-email
+### agent-worker-email
 
 | Variable          | Description                        |
 |-------------------|------------------------------------|
@@ -45,9 +45,9 @@ bedrock-agent/            ← calls Bedrock Agent runtime (invoke_agent)
 
 ## Deployment
 
-1. Deploy `agentcore-worker-email` as a Lambda and note its ARN.
+1. Deploy `agent-worker-email` as a Lambda and note its ARN.
 2. In the AWS Console (or Terraform), create a Bedrock Agent with:
    - System prompt describing the 4 required fields and missing-field follow-up behavior.
-   - Action group pointing to the `agentcore-worker-email` Lambda ARN.
+    - Action group pointing to the `agent-worker-email` Lambda ARN.
 3. Deploy `bedrock-agent` as a Lambda with the agent ID and alias ID env vars set.
 4. Expose `bedrock-agent` via API Gateway (POST endpoint accepting `user_text` + `session_id`).

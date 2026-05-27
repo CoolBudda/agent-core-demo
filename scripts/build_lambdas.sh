@@ -11,7 +11,7 @@
 #
 # Output:
 #   multi-agent-registration-app/bedrock-agent/dist/bedrock_agent.zip
-#   multi-agent-registration-app/agentcore-worker-email/dist/agentcore_worker_email.zip
+#   multi-agent-registration-app/agent-worker-email/dist/agent_worker_email.zip
 # =============================================================================
 
 set -euo pipefail
@@ -70,11 +70,11 @@ build_lambda \
   "lambda_function.py utils.py"
 
 # ---------------------------------------------------------------------------
-# Build agentcore-worker-email Lambda
+# Build agent-worker-email Lambda
 # ---------------------------------------------------------------------------
 build_lambda \
-  "agentcore-worker-email" \
-  "agentcore_worker_email.zip" \
+  "agent-worker-email" \
+  "agent_worker_email.zip" \
   "lambda_function.py utils.py"
 
 echo ""

@@ -1,3 +1,8 @@
+variable "region" {
+  description = "AWS region to deploy resources."
+  type        = string
+  default     = "us-east-1"
+}
 variable "bedrock_agent_alias_name" {
   description = "Name of the Bedrock agent alias."
   type        = string
@@ -81,10 +86,10 @@ variable "bedrock_agent_zip_path" {
 }
 
 
-variable "email_worker_zip_path" {
-  description = "Local path to the agentcore-worker-email Lambda deployment package (.zip). Build with pip before applying."
+variable "agent_worker_email_zip_path" {
+  description = "Local path to the agent-worker-email Lambda deployment package (.zip). Build with pip before applying."
   type        = string
-  default     = "../multi-agent-registration-app/agentcore-worker-email/dist/agentcore_worker_email.zip"
+  default     = "../multi-agent-registration-app/agent-worker-email/dist/agent_worker_email.zip"
 }
 
 
@@ -101,7 +106,7 @@ variable "api_gateway_throttle_rate" {
 }
 
 variable "ses_sender_email" {
-  description = "Verified SES sender email address used by the agentcore-worker-email Lambda."
+  description = "Verified SES sender email address used by the agent-worker-email Lambda."
   type        = string
   default     = ""
 }
