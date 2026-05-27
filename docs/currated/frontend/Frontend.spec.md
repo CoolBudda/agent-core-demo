@@ -1,33 +1,24 @@
+
 # Frontend Specification
 
-## Stack
+## Purpose
+Provide a simple UI for user registration. Accepts either structured form input or free-text input, then submits to backend for agent processing.
 
+## Stack
 | Property  | Value    |
 |-----------|----------|
 | Bundler   | Vite     |
 | Framework | React    |
-| Styling   | Tailwind CSS (only) |
+| Styling   | Tailwind CSS |
 | Linter    | ESLint   |
 
 ## Application Structure
-
-The app has two screens:
-
-### Screen 1 — Structured Form
-- Form fields: `name`, `email`, `phone`, `sport`
-- Textarea: displays validation status
-
-### Screen 2 — Free-text Form
-- Single textarea: user inputs all information as a free-form string
-- Textarea: displays validation status
-
-## Role in the Demo
-
-The UI is a **submission entry point only** — it is not the focus of this learning exercise. The core demo value is in the multi-agent processing pipeline (validation → error handling → human handoff) handled by AWS Bedrock AgentCore after form submission.
+- Single Screen: Free-text Form (one textarea for all user info in natural language)
+- Displays validation status/results and any follow-up questions from backend.
 
 ## Notes
-
-- Tailwind is the only styling solution; no other CSS frameworks or CSS-in-JS.
-- ESLint should be configured with `typescript-eslint`, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`.
-- A plain POST API endpoint could substitute for the UI if needed.
+- UI is a submission entry point only; all extraction and validation logic is backend-driven.
+- Only free-text input is required (no structured form).
+- Tailwind only for styling.
+- ESLint with recommended plugins.
 

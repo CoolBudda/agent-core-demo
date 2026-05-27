@@ -1,38 +1,22 @@
+
 # Backend Specification
 
-## Runtime
+## Purpose
+Process user registration using an AI agent pipeline. Extracts user name, email, phone, and favorite sport from input, validates, and triggers downstream actions.
 
+## Runtime
 | Property | Value        |
 |----------|--------------|
 | Platform | AWS Lambda   |
 | Language | Python 3.10+ |
 
 ## Tooling
-
-| Tool    | Purpose                     |
-|---------|-----------------------------|
+| Tool    | Purpose                       |
+|---------|-------------------------------|
 | uv      | Package & environment manager |
-| ruff    | Linter (`ruff check`)       |
-| ruff    | Formatter (`ruff format`)   |
+| ruff    | Linter/Formatter              |
 
-## Common Commands
-
-```bash
-# Install dev dependencies
-uv add --dev ruff
-
-# Lint
-uv run ruff check .
-
-# Auto-fix lint issues
-uv run ruff check . --fix
-
-# Format
-uv run ruff format .
-```
-
-## Agent Processing Flow
-
+## Agent Pipeline
 Lambda triggers a multi-agent pipeline in Bedrock AgentCore:
 
 | Step | Agent             | Trigger                        | Action                                      |
@@ -42,7 +26,6 @@ Lambda triggers a multi-agent pipeline in Bedrock AgentCore:
 | 3    | Human Handoff     | Validation passes              | Forwards submission to an employee           |
 
 ## Notes
-
-- Lambda functions receive requests forwarded from AWS API Gateway.
-- Lambda delegates multi-agent orchestration to AWS Bedrock AgentCore.
-- The submission entry point (UI form or POST API) is secondary to the agent pipeline.
+- Lambda receives requests from API Gateway (proxy integration).
+- Lambda delegates orchestration to Bedrock AgentCore.
+- Submission entry point can be UI or POST API.

@@ -18,8 +18,8 @@
 ## Other services
 - AWS api gateway receives user request and sends to integrated Lambda function
 - AWS BedRock agent receives request from lambda and send to LLM for paln, ressoning etc.
-- AWS AgentCore workers proesses bedrock agent calls
-- - `Agentcore 
+- AWS BedRocke Agent  proesses bedrock agent calls
+- Agent tool: a lambda to send email for conformation if information is complete
 
 ## Infrastructure
 - using Terraform
