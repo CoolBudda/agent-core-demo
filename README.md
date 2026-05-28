@@ -14,6 +14,16 @@ web-lambda-agentcore form validation
 - Using stylesheet in component
 
 
+## terra-agent-infra
+- terraform everyting except bedrockagent
+
+## terra-ai-agent
+- terrafrom bedrock agent only
+this is provisioned once before terra-agent-infra
+
+
+
+
 ## Backend Lambda
 - Python implementation
 - so simple validation before send request to Bedrock AgentCore

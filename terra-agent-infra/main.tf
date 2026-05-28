@@ -18,7 +18,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project     = "agent-demo-bedrock"
+      Project     = "agent-core-demo"
       ManagedBy   = "terraform"
       Environment = var.environment
     }

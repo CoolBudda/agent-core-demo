@@ -13,16 +13,6 @@ output "bedrock_agent_function_arn" {
   value       = aws_lambda_function.bedrock_agent.arn
 }
 
-output "email_worker_function_name" {
-  description = "Name of the agent-worker-email Lambda (Bedrock Agent action group target)."
-  value       = aws_lambda_function.email_worker.function_name
-}
-
-output "email_worker_function_arn" {
-  description = "ARN of the agent-worker-email Lambda. Use this when configuring the Bedrock Agent action group."
-  value       = aws_lambda_function.email_worker.arn
-}
-
 output "api_gateway_rest_api_id" {
   description = "REST API ID of the API Gateway (useful for further config or testing)."
   value       = aws_api_gateway_rest_api.this.id
@@ -31,11 +21,6 @@ output "api_gateway_rest_api_id" {
 output "cloudwatch_log_group_bedrock_agent" {
   description = "CloudWatch log group for the bedrock-agent Lambda."
   value       = aws_cloudwatch_log_group.bedrock_agent_logs.name
-}
-
-output "cloudwatch_log_group_email_worker" {
-  description = "CloudWatch log group for the agent-worker-email Lambda."
-  value       = aws_cloudwatch_log_group.email_worker_logs.name
 }
 
 output "cloudwatch_log_group_api_gateway" {

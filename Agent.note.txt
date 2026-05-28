@@ -22,4 +22,18 @@ Procedure:
 aws-azure-login
 aws sts get-caller-identity
 
+## Prepare agent 
+shuhaicui@CJW2X4GL0W terra-ai-agent % 
+aws bedrock-agent prepare-agent \
+  --agent-id WBKYJIUJU0 \
+  --region us-east-1
 
+
+*** Command line alias create not working, report success, don't see from console, create from console
+## alias:
+terra-ai-agent % 
+aws bedrock-agent create-agent-alias \
+  --agent-id WBKYJIUJU0 \
+  --agent-alias-name "demo-alias" \
+  --version "1" \
+  --region us-east-1 

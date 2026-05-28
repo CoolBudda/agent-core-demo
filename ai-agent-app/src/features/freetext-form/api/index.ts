@@ -6,7 +6,7 @@ export async function validateFreetextForm(
 ): Promise<ValidationResult> {
   // sessionId must be present in data
   const response = await apiClient.post(
-    '/',
+    '/dev/submit',
     data
   );
   // If backend returns { result: ... }

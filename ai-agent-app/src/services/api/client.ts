@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
-const API_BASE_URL = "https://kkhop5fqvzd2qskuwe5ratm33a0fklyj.lambda-url.us-east-1.on.aws/"
+const API_BASE_URL = "https://okvqhor99i.execute-api.us-east-1.amazonaws.com"
 // lambda: user-registration-validation-br-ag-1d368
 
 const apiClient = axios.create({
