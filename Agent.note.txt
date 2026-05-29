@@ -25,7 +25,7 @@ aws sts get-caller-identity
 ## Prepare agent 
 shuhaicui@CJW2X4GL0W terra-ai-agent % 
 aws bedrock-agent prepare-agent \
-  --agent-id WBKYJIUJU0 \
+  --agent-id JIOOT0OXUK \
   --region us-east-1
 
 
@@ -33,7 +33,7 @@ aws bedrock-agent prepare-agent \
 ## alias:
 terra-ai-agent % 
 aws bedrock-agent create-agent-alias \
-  --agent-id WBKYJIUJU0 \
+  --agent-id JIOOT0OXUK \
   --agent-alias-name "demo-alias" \
   --version "1" \
   --region us-east-1 

@@ -10,8 +10,8 @@ interface Props {
 export default function ValidationStatus({ isPending, isError, error, result }: Props) {
   const getStatusClass = () => {
     if (!result) return 'text-gray-500 dark:text-gray-400';
-    if (result.status === 'valid') return 'text-green-700 dark:text-green-400';
-    if (result.status === 'invalid') return 'text-red-700 dark:text-red-400';
+    if (result.status === 'success') return 'text-green-700 dark:text-green-400';
+    if (result.status === 'missing') return 'text-red-700 dark:text-red-400';
     return 'text-yellow-700 dark:text-yellow-400';
   };
 
@@ -21,6 +21,8 @@ export default function ValidationStatus({ isPending, isError, error, result }: 
     if (!result) return 'Submit the form above to see the validation result here.';
     const lines = [`Status: ${result.status.toUpperCase()}`, `Message: ${result.message}`];
     if (result.details?.length) {
+      console.log('details type:', typeof result.details);
+      console.log('Validation details:', result.details);
       lines.push('', 'Details:', ...result.details.map((d) => `  • ${d}`));
     }
     return lines.join('\n');

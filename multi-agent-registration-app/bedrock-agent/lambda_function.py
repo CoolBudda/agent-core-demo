@@ -80,15 +80,21 @@ def call_bedrock_agent(raw_input: str, session_id: str, agent_id: str, alias_id:
             inputText=raw_input
         )
         # The response structure may vary; adjust as needed
-        content = ""
+        # The response is an EventStream, so we need to iterate over it
+        print("Response received from Bedrock agent:", response)
+        print("session_id", response["sessionId"])
+        print("completion", response["completion"])
+        content = []
         for event in response["completion"]:
-            if "chunk" in event and "content" in event["chunk"]:
-                content += event["chunk"]["content"]
-                
+            if "chunk" in event and "bytes" in event["chunk"]:
+                content.append(event["chunk"]["bytes"].decode("utf-8"))
+
+        print("content:", content)
+
         return {
             "status": "success",
-            "message": response.get("completion", {}).get("content", ""),
-            "details": response
+            "message": f"${raw_input}:",
+            "details": content
         }
     except botocore.exceptions.BotoCoreError as e:
         return {

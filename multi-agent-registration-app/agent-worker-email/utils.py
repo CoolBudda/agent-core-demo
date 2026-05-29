@@ -8,29 +8,34 @@ SENDER = os.environ.get("SES_SENDER_EMAIL", "no-reply@example.com")
 
 def send_registration_email(
     to_address: str,
-    name: str,
-    phone: str,
-    favorite_sport: str,
+    registration_info: str,
+    registration_as: dict,
 ) -> None:
     """
     Send a registration confirmation email via Amazon SES.
     Replace with your preferred email provider as needed.
     """
+    name = registration_as.get("name")
+    email = registration_as.get("email")
+    phone = registration_as.get("phone")
+    favorite_sport = registration_as.get("favorite_sport")
+
     subject = "Registration Confirmed"
-    body = (
-        f"Hi {name},\n\n"
-        f"Your registration is complete.\n\n"
-        f"Details:\n"
-        f"  Phone: {phone}\n"
-        f"  Favourite sport: {favorite_sport}\n\n"
-        f"Welcome aboard!"
+
+    body_text = (
+        f"Name: {name}\n"
+        f"Email: {email}\n"
+        f"Phone: {phone}\n"
+        f"Favorite Sport: {favorite_sport}\n"
     )
 
     ses.send_email(
         Source=SENDER,
-        Destination={"ToAddresses": [to_address]},
+        Destination={"ToAddresses": [email]},
         Message={
             "Subject": {"Data": subject},
-            "Body": {"Text": {"Data": body}},
-        },
+            "Body": {
+                "Text": {"Data": body_text}
+            }
+        }
     )

@@ -11,7 +11,7 @@ export interface FreetextFormData {
 }
 
 export interface ValidationResult {
-  status: 'valid' | 'invalid' | 'pending';
+  status: 'success' | 'missing';
   message: string;
   details?: string[];
 }

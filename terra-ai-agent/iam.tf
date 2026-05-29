@@ -2,21 +2,6 @@
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 
-# Lambda execution role — least-privilege
-resource "aws_iam_role" "lambda_exec" {
-  name = "agent-worker-lambda-exec-${var.environment}"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect    = "Allow"
-        Principal = { Service = "lambda.amazonaws.com" }
-        Action    = "sts:AssumeRole"
-      }
-    ]
-  })
-}
 # ------------------------------------------------------------------
 # Agent Email Worker Lambda execution role — least-privilege
 # Permissions: CloudWatch Logs only (add more as needed)
@@ -57,6 +42,11 @@ resource "aws_iam_policy" "agent_worker_email_logs" {
           "logs:PutLogEvents"
         ]
         Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/agent-worker-email-${var.environment}:*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": "ses:SendEmail",
+        "Resource": "arn:aws:ses:us-east-1:863615190391:identity/*"
       }
     ]
   })

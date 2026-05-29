@@ -15,7 +15,7 @@ resource "aws_cloudwatch_log_group" "email_worker_logs" {
 resource "aws_lambda_function" "email_worker" {
   function_name = "agent-worker-email-${var.environment}"
   description   = "Sends registration confirmation email. Invoked by Bedrock Agent action group when all registration fields are collected."
-  role          = aws_iam_role.lambda_exec.arn
+  role          = aws_iam_role.agent_worker_email_exec.arn
 
   filename         = var.agent_worker_email_zip_path
   source_code_hash = filebase64sha256(var.agent_worker_email_zip_path)

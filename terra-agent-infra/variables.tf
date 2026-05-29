@@ -7,13 +7,13 @@ variable "region" {
 variable "bedrock_agent_id" {
   description = "Existing bedrock agent id"
   type        = string
-  default     = "WBKYJIUJU0"
+  default     = "JIOOT0OXUK"
 }
 
 variable "bedrock_agent_alias_id" {
   description = "Existing bedrock agent alias id"
   type        = string
-  default     = "E3ALIVTWCU"
+  default     = "BDZMJ6A3G2"
 }
 
 variable "bedrock_agent_alias_name" {
